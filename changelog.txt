@@ -1,0 +1,10 @@
+v - get list from url
+v - use selenium to click "more-btn"
+v - [refac] - combine url from paremeters instead of hardcoded values
+v - [fix] - check if there is a btn and if it is visible
+v - now "hot" vacancies are also tracked
+v - [refac] - args[1] for "search" field
+v - use pyvirtualdisplay for invisible Firefox
+
+- detect changes in the list, especially with keywords
+- notify
