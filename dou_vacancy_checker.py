@@ -7,49 +7,41 @@ from lxml import html
 
 
 base = 'http://jobs.dou.ua/vacancies/?'
-city = '%d0%9a%d0%b8%d0%b5%d0%b2'
+city = 'киев'  # '%d0%9a%d0%b8%d0%b5%d0%b2'
+search_for = 'python'
 
 if len(sys.argv) > 1:
-    search = sys.argv[1]
-else:
-    search = 'python'
+    search_for = sys.argv[1]
 
-# url example:
-# http://jobs.dou.ua/vacancies/?search=java&city=%D0%9A%D0%B8%D0%B5%D0%B2
-url = base + '&'.join((
-                       'city=' + city,
-                       'search=' + search,
-                     ))
+# url example: http://jobs.dou.ua/vacancies/?search=java&city=%D0%9A%D0%B8%D0%B5%D0%B2
+url = base + 'city={}&search={}'.format(city, search_for)
 
 display = Display(visible=0, size=(800, 600))  # hidden browser
 display.start()
-chromedriver = "./chromedriver"
+
+chromedriver = "./chromedriver"  # https://sites.google.com/a/chromium.org/chromedriver/downloads
 os.environ["webdriver.chrome.driver"] = chromedriver
 driver = webdriver.Chrome(chromedriver)
 
 driver.get(url)
-source = driver.page_source
+initial_page_source = driver.page_source
 
 
 def main():
-    tree = html.fromstring(source)
-    # before clicking with selenium
-    # vacancy_list = parse_list(tree)
-    # print 'There are {} vacancies.'.format(len(vacancy_list))
-
+    tree = html.fromstring(initial_page_source)
     xpth = './/div[@class="more-btn"]/a'
 
     while more_btn_is_visible(tree):
-        print 'there is "more-btn"...',
+        print('there is "more-btn"...', end=' ')
         element = driver.find_element_by_xpath(xpth)
         element.click()
         time.sleep(1)
-        print 'Clicked.'
+        print('Clicked.')
         time.sleep(1.5)
         tree = html.fromstring(driver.page_source)
 
     vacancy_list = parse_list(tree)
-    print 'Finally:\n There are {} vacancies.'.format(len(vacancy_list))
+    print('Finally:\n There are {} vacancies.'.format(len(vacancy_list)))
 
     notify()
     driver.close()
