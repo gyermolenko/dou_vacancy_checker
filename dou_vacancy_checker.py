@@ -1,24 +1,28 @@
 import sys
 import os
 import time
+import argparse
 from selenium import webdriver
 from pyvirtualdisplay import Display
 from lxml import html
 
 
-base = 'http://jobs.dou.ua/vacancies/?'
-city = 'киев'  # '%d0%9a%d0%b8%d0%b5%d0%b2'
-search_for = 'python'
+BASE = 'http://jobs.dou.ua/vacancies/?'
 
-if len(sys.argv) > 1:
-    search_for = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('-c','--city')
+parser.add_argument('-s','--search', required=True)
+args = parser.parse_args()
 
 # url example: http://jobs.dou.ua/vacancies/?search=java&city=%D0%9A%D0%B8%D0%B5%D0%B2
-url = base + 'city={}&search={}'.format(city, search_for)
+if args.city:
+    url = BASE + 'city={}&search={}'.format(args.city, args.search)
+else:
+    url = BASE + 'city={}&search={}'.format('киев', args.search)
+
 
 display = Display(visible=0, size=(800, 600))  # hidden browser
 display.start()
-
 chromedriver = "./chromedriver"  # https://sites.google.com/a/chromium.org/chromedriver/downloads
 os.environ["webdriver.chrome.driver"] = chromedriver
 driver = webdriver.Chrome(chromedriver)
