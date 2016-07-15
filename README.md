@@ -9,5 +9,5 @@ Get list of vacancies for "search-word" specified as argument (or for 'python' b
 
 `python dou_vacancy_checker.py`
 
-`python dou_vacancy_checker.py '-s','--search' ['-c','--city']`
+`python dou_vacancy_checker.py -s/--search search-word [-c/--city city-name]`
 
